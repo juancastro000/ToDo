@@ -1,35 +1,66 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import React from 'react'
 import './App.css'
+import TodoInput from './components/todoInput'
+import TodoItem from './components/todoItem'
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const [todoItems, setTodoItems] = React.useState(
+    [ {todo: "clean", complete : false},
+      {todo: "eat", complete: false},
+      {todo: "sleep", complete: false}
+    ]
+  );
+  const createTodoItem = (todo) => {
+
+    const newTodoItems = [...todoItems,{todo,complete: false}];
+    setTodoItems(newTodoItems);
+  };
+
+  const deleteTodoItem = (index) => {
+    const newTodoItems = [...todoItems]
+    newTodoItems.splice(index,1)
+    setTodoItems(newTodoItems)
+  };
+
+  const completeTodoItem = (index) => {
+
+    const newTodoItems = [...todoItems];
+    newTodoItems[index].complete === false
+    ? (newTodoItems[index].complete = true) 
+    : (newTodoItems[index].complete = false);
+    setTodoItems(newTodoItems)
+  };
+
+  const updateTodoItem = (index) => {
+    const newTodoItems = [...todoItems];
+    const item = newTodoItems[index];
+    let newItem = prompt(`Update ${item.todo}?`, item.todo);
+    let todoObj = {todo:newItem, complete:false};
+    newTodoItems.splice(index, 1, todoObj);
+    if (newItem === null || newItem === "") {
+      return;
+    } else {
+      item.todo = newItem;
+    }
+    setTodoItems(newTodoItems);
+
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className="app">
+        <TodoInput createTodoItem={createTodoItem} />
+        {todoItems.map((item, index) => (
+        <TodoItem key={index} index={index} item={item}
+         deleteTodoItem={deleteTodoItem} 
+         completeTodoItem={completeTodoItem}
+         updateTodoItem={updateTodoItem}
+          />
+        ))}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
-  )
+  );
 }
 
 export default App
