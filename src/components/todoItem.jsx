@@ -1,6 +1,6 @@
 
 
-const TodoItem = ({item, index, deleteTodoItem, completeTodoItem, updateTodoItem}) => {
+const TodoItem = ({item, index, deleteTodoItem, completeTodoItem, moveTodoItem}) => {
 
     return(
         <div className="todo-list">
@@ -8,7 +8,8 @@ const TodoItem = ({item, index, deleteTodoItem, completeTodoItem, updateTodoItem
             {item.todo} </li>
             <div className="btns">
                 <button onClick={() => completeTodoItem(index)}>Complete</button>
-                <button onClick={() => updateTodoItem(index)}>Update</button>
+                <button onClick={() => moveTodoItem(index, -1)}>🢁</button>
+                <button onClick={() => moveTodoItem(index, 1)}>🢃</button>
                 <button onClick={() => deleteTodoItem(index)}>X</button>
                 
             </div>

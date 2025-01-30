@@ -32,20 +32,18 @@ function App() {
     setTodoItems(newTodoItems)
   };
 
-  const updateTodoItem = (index) => {
-    const newTodoItems = [...todoItems];
-    const item = newTodoItems[index];
-    let newItem = prompt(`Update ${item.todo}?`, item.todo);
-    let todoObj = {todo:newItem, complete:false};
-    newTodoItems.splice(index, 1, todoObj);
-    if (newItem === null || newItem === "") {
-      return;
-    } else {
-      item.todo = newItem;
-    }
-    setTodoItems(newTodoItems);
+  const moveTodoItem = (index,direction) => {
 
+    const newTodoItems = [...todoItems];
+    const newIndex = index + direction;
+
+    if (newIndex < 0 || newIndex >= newTodoItems.length) return;
+
+    [newTodoItems[index], newTodoItems[newIndex]] = [newTodoItems[newIndex], newTodoItems[index]]
+    setTodoItems(newTodoItems);
   };
+
+
 
   return (
     <>
@@ -55,7 +53,7 @@ function App() {
         <TodoItem key={index} index={index} item={item}
          deleteTodoItem={deleteTodoItem} 
          completeTodoItem={completeTodoItem}
-         updateTodoItem={updateTodoItem}
+         moveTodoItem={moveTodoItem}
           />
         ))}
       </div>
